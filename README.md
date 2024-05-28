@@ -1,8 +1,7 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
-
-
+If you wish to clone this repo and connect to the databases locally, you will need to create two .env. files on your machine as they are included in .gitignore.
+Create .env.test and .env.development then link them with PGDATABASE=, see /db/setup.sql for the database names. 
 
 --- 
 
