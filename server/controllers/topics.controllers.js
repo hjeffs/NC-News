@@ -1,5 +1,6 @@
 const { fetchTopics,
-        fetchApi
+        fetchApi,
+        fetchArticleByID
         } = require('../models/topics.models')
 
 exports.getTopics = (req, res, next) => {
@@ -14,6 +15,19 @@ exports.getApi = (req, res, next) => {
     return fetchApi()
     .then((api) => { 
         res.status(200).send( { api } )
+    })
+    .catch(next)
+}
+
+exports.getArticleByID = (req, res, next) => {
+    const ID = req.params.article_id
+    return fetchArticleByID(ID)
+    .then((article) => {
+        if(article.length === 0) {
+            res.status(404).send( { msg: '404: Not Found' } )
+        } else {
+            res.status(200).send( { article } )
+        }
     })
     .catch(next)
 }
