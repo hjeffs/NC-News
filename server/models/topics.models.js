@@ -27,3 +27,35 @@ exports.fetchArticleByID = (ID) => {
         return article.rows
     })
 }
+
+exports.fetchArticles = () => {
+    let articlesQuery = `SELECT author, title, article_id, topic, created_at, votes, article_img_url
+                         FROM articles
+                         ORDER BY created_at DESC;`
+
+    const commentCountQuery = `SELECT COUNT(*) AS comment_count 
+                                FROM comments
+                                GROUP BY article_id;`
+                                
+    return db.query(articlesQuery)
+    .then((articlesResults) => {
+        const articles = articlesResults.rows
+
+        return db.query(commentCountQuery)
+        .then((commentsResults) => {
+            const commentCounts = commentsResults.rows
+           
+            const commentCountMap = {}
+
+            commentCounts.forEach(count => {
+            commentCountMap[count.article_id] = count.comment_count
+            })
+
+            articles.forEach(article => {
+            article.comment_count = commentCountMap[article.article_id] || 0
+            })
+
+            return articles
+        })
+    })
+}
