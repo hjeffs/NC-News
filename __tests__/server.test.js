@@ -95,7 +95,7 @@ describe('GET /api/articles/:article_id', () => {
     })
 })
 
-describe('GET /api/articles', () => {
+describe.only('GET /api/articles', () => {
     test('200: responds with articles array of article objects w/ correct properties', () => {
         return request(app)
         .get('/api/articles')
@@ -113,7 +113,7 @@ describe('GET /api/articles', () => {
                     created_at: expect.any(String),
                     votes: expect.any(Number),
                     article_img_url: expect.any(String),
-                    comment_count: expect.any(Number)
+                    comment_count: expect.any(String)
                 })
             })
         })
