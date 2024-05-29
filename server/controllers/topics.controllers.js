@@ -58,7 +58,6 @@ exports.getCommentsByArticleID = (req, res, next) => {
 
 exports.postComment = (req, res, next) => {
     const article_id = req.params.article_id
-    console.log(article_id)
     const newComment = req.body
     insertComment(article_id, newComment)
     .then((comment) => {
