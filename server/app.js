@@ -5,7 +5,8 @@ const { getTopics,
         getApi,
         getArticleByID,
         getArticles,
-        getCommentsByArticleID
+        getCommentsByArticleID,
+        postComment
         } = require('../server/controllers/topics.controllers')
 
 const { handle404s, handle400s, handle500s } = require('./errors')
@@ -21,6 +22,8 @@ app.get('/api/articles/:article_id', getArticleByID)
 app.get('/api/articles', getArticles)
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleID)
+
+app.post('/api/articles/:article_id/comments', postComment)
 
 app.use(handle404s)
 app.use(handle400s)
