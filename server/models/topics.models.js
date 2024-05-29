@@ -59,3 +59,14 @@ exports.fetchArticles = () => {
         })
     })
 }
+
+exports.fetchCommentsByArticleID = (ID) => {
+    const commentsQuery = `SELECT *
+                           FROM comments
+                           WHERE article_id = $1
+                           ORDER BY created_at DESC;`
+    return db.query(commentsQuery, [ID])
+    .then((comments) => {
+        return comments.rows
+    })
+}

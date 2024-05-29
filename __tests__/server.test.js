@@ -128,3 +128,44 @@ describe('GET /api/articles', () => {
         })
     })
 })
+
+describe.only('GET /api/articles/:article_id/comments', () => {
+    test('200: responds with an array of comments for given article_id', () => {
+        return request(app)
+        .get('/api/articles/3/comments')
+        .expect(200)
+        .then(( { body } ) => {
+            const comments = body.article
+            expect(Array.isArray(comments)).toBe(true)
+            expect(comments.length).toBe(2)
+            comments.forEach((comment) => {
+                expect(comment).toMatchObject({
+                        body: expect.any(String),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        article_id: expect.any(Number),
+                        created_at: expect.any(String),
+                        comment_id: expect.any(Number)
+                })
+            })
+        })
+    })
+    test('404: responds with error message when ID > max ID', () => {
+        return request(app)
+        .get('/api/articles/99999999/comments')
+        .expect(404)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('404: Not Found')
+        })
+    })
+    test('400: responds with error message when ID is invalid type', () => {
+        return request(app)
+        .get('/api/articles/NaN/comments')
+        .expect(400)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('400: Bad Request')
+        })
+    })
+})

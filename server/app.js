@@ -4,7 +4,8 @@ const app = express()
 const { getTopics,
         getApi,
         getArticleByID,
-        getArticles
+        getArticles,
+        getCommentsByArticleID
         } = require('../server/controllers/topics.controllers')
 
 const { handle404s, handle400s, handle500s } = require('./errors')
@@ -18,6 +19,8 @@ app.get('/api', getApi)
 app.get('/api/articles/:article_id', getArticleByID)
 
 app.get('/api/articles', getArticles)
+
+app.get('/api/articles/:article_id/comments', getCommentsByArticleID)
 
 app.use(handle404s)
 app.use(handle400s)
