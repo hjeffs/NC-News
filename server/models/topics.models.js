@@ -29,34 +29,17 @@ exports.fetchArticleByID = (ID) => {
 }
 
 exports.fetchArticles = () => {
-    let articlesQuery = `SELECT author, title, article_id, topic, created_at, votes, article_img_url
-                         FROM articles
-                         ORDER BY created_at DESC;`
+    const articlesWithCommentCountQuery = `SELECT a.author, a.title, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url, COUNT(c.comment_id) AS comment_count
+                                        FROM articles a
+                                        LEFT JOIN comments c
+                                        ON a.article_id = c.article_id
+                                        GROUP BY a.article_id
+                                        ORDER BY created_at DESC;`
 
-    const commentCountQuery = `SELECT COUNT(*) AS comment_count 
-                                FROM comments
-                                GROUP BY article_id;`
-                                
-    return db.query(articlesQuery)
+    return db.query(articlesWithCommentCountQuery)
     .then((articlesResults) => {
         const articles = articlesResults.rows
-
-        return db.query(commentCountQuery)
-        .then((commentsResults) => {
-            const commentCounts = commentsResults.rows
-           
-            const commentCountMap = {}
-
-            commentCounts.forEach(count => {
-            commentCountMap[count.article_id] = count.comment_count
-            })
-
-            articles.forEach(article => {
-            article.comment_count = commentCountMap[article.article_id] || 0
-            })
-
-            return articles
-        })
+        return articles
     })
 }
 
