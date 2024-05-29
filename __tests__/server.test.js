@@ -95,7 +95,7 @@ describe('GET /api/articles/:article_id', () => {
     })
 })
 
-describe.only('GET /api/articles', () => {
+describe('GET /api/articles', () => {
     test('200: responds with articles array of article objects w/ correct properties', () => {
         return request(app)
         .get('/api/articles')
@@ -166,6 +166,25 @@ describe('GET /api/articles/:article_id/comments', () => {
         .then(( { body } ) => {
             const errorMsg = body.msg
             expect(errorMsg).toBe('400: Bad Request')
+        })
+    })
+})
+
+describe.only('POST /api/articles/:article_id/comments', () => {
+    test('201: given valid object, creates new comment', () => {
+        const postComment = {
+            username: "icellusedkars",
+            body: "blah blah"
+        }
+        return request(app)
+        .post('/api/articles/2/comments')
+        .send(postComment)
+        .expect(201)
+        .then(( { body } ) => {
+            expect(body.comment).toMatchObject({
+                author: "icellusedkars",
+                body: "blah blah"
+            })
         })
     })
 })
