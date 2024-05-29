@@ -94,3 +94,37 @@ describe('GET /api/articles/:article_id', () => {
         })
     })
 })
+
+describe.only('GET /api/articles', () => {
+    test('200: responds with articles array of article objects w/ correct properties', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(( { body } ) => {
+            const articles = body.articles
+            expect(Array.isArray(articles)).toBe(true)
+            expect(articles.length).toBe(13)
+            articles.forEach((article) => {
+                expect(article).toMatchObject({
+                    author: expect.any(String),
+                    title: expect.any(String),
+                    article_id: expect.any(Number),
+                    topic: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    article_img_url: expect.any(String),
+                    comment_count: expect.any(Number)
+                })
+            })
+        })
+    })
+    test('404: responds with error message when URL is invalid', () => {
+        return request(app)
+        .get('/api/5')
+        .expect(404)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('404: Not Found')
+        })
+    })
+})
