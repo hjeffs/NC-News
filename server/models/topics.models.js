@@ -19,3 +19,11 @@ exports.fetchApi = () => {
         return JSONdata
     })
 }
+
+exports.fetchArticleByID = (ID) => {
+    let SQLQuery = 'SELECT * FROM articles WHERE article_id = $1;'
+    return db.query(SQLQuery, [ID])
+    .then((article) => {
+        return article.rows
+    })
+}
