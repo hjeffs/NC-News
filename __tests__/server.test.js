@@ -187,4 +187,32 @@ describe.only('POST /api/articles/:article_id/comments', () => {
             })
         })
     })
+    test('400: responds with error when given invalid object (user does not exist)', () => {
+        const postComment = {
+            username: "testingThisFeature",
+            body: "blah blah blah"
+        }
+        return request(app)
+        .post('/api/articles/2/comments')
+        .send(postComment)
+        .expect(400)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('400: Bad Request')
+        })
+    })
+    test('400: responds with error when given valid object and invalid article_id', () => {
+        const postComment = {
+            username: "icellusedkars",
+            body: "blah blah"
+        }
+        return request(app)
+        .post('/api/articles/999999/comments')
+        .send(postComment)
+        .expect(400)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('400: Bad Request')
+        })
+    })
 })
