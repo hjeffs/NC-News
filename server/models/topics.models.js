@@ -93,3 +93,22 @@ exports.updateArticleByID = (article_id, votes) => {
         return result.rows[0]
     })
 }
+
+exports.removeComment = (comment_id) => {
+    const removeCommentQuery = `DELETE FROM comments
+                                WHERE comment_id = $1
+                                RETURNING *`
+    return db.query(removeCommentQuery, [comment_id])
+    .then((result) => {
+        return result.rows[0]
+    })
+}
+
+exports.doesCommentExist = (comment_id) => {
+    const commentExistsQuery = `SELECT EXISTS
+                                (SELECT 1 FROM comments WHERE comment_id = $1)`
+    return db.query(commentExistsQuery, [comment_id])
+    .then((result) => {
+        return result.rows[0].exists
+    })
+}
