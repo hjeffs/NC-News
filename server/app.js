@@ -25,6 +25,12 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleID)
 
 app.post('/api/articles/:article_id/comments', postComment)
 
+app.all('*', (req, res, next) => { 
+    const err = new Error('404: Not Found')
+    err.status = 404
+    next(err)
+});
+
 app.use(handle404s)
 app.use(handle401s)
 app.use(handle400s)

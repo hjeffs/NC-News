@@ -12,9 +12,14 @@ exports.handle401s = (err, req, res, next) => {
         next(err); 
     }
 };
-exports.handle404s = (req, res) => {
-    res.status(404).send({ msg: '404: Not Found' });
-};
+exports.handle404s = (err, req, res, next) => { 
+    if (err.status === 404) {
+        res.status(404).send({ msg: '404: Not Found' }); 
+        } else {
+            next(err)
+        }
+ };
+
 exports.handle500s = (err, req, res, next) => {
     res.status(500).send({ msg: '500: Internal Server Error' });
 };

@@ -201,7 +201,7 @@ describe('POST /api/articles/:article_id/comments', () => {
             expect(errorMsg).toBe('401: Unauthorized')
         })
     })
-    test('400: responds with error when given valid object and article_id does not exist', () => {
+    test('404: responds with error when given valid object and article_id does not exist', () => {
         const postComment = {
             username: "icellusedkars",
             body: "blah blah"
@@ -209,10 +209,10 @@ describe('POST /api/articles/:article_id/comments', () => {
         return request(app)
         .post('/api/articles/999999/comments')
         .send(postComment)
-        .expect(400)
+        .expect(404)
         .then(( { body } ) => {
             const errorMsg = body.msg
-            expect(errorMsg).toBe('400: Bad Request')
+            expect(errorMsg).toBe('404: Not Found')
         })
     })
 })
