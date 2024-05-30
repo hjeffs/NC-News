@@ -74,5 +74,9 @@
       "votes": 101,
       "comment_count": 6
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "removes comment by id, serves nothing",
+    "queries": []
   }
 }

@@ -260,3 +260,31 @@ describe('PATCH /api/articles/:article_id', () => {
         })
     })
 })
+describe('DELETE /api/comments/:comment_id', () => {
+    test('204: deletes given comment by comment_id', () => {
+        return request(app)
+        .delete('/api/comments/1')
+        .expect(204)
+        .then(( { body } ) => {
+            expect(body).toEqual({})
+        })
+    })
+    test('400: errors when given a invalid type comment_id', () => {
+        return request(app)
+        .delete('/api/comments/1st')
+        .expect(400)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('400: Bad Request')
+        })
+    })
+    test('404: errors when comment does not exist', () => {
+        return request(app)
+        .delete('/api/comments/10000')
+        .expect(404)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('404: Not Found')
+        })
+    })
+})

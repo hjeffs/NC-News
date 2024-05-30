@@ -6,7 +6,9 @@ const { fetchTopics,
         insertComment,
         doesUserExist,
         doesArticleExist,
-        updateArticleByID
+        updateArticleByID,
+        removeComment,
+        doesCommentExist
         } = require('../models/topics.models')
 
 
@@ -132,4 +134,28 @@ exports.patchArticle = (req, res, next) => {
         }
     })
     .catch(next)
+}
+
+exports.deleteComment = (req, res, next) => {
+    const comment_id = req.params.comment_id
+
+    if (isNaN(comment_id)) {
+        const error = new Error()
+        error.status = 400
+        return next(error)
+    }
+
+    doesCommentExist(comment_id)
+    .then((exists) => {
+        if (!exists) {
+            const error = new Error()
+            error.status = 404
+            return next(error)
+        } else {
+            return removeComment(comment_id)
+            .then((result) => {
+                res.status(204).send( { result } )
+            })
+        }
+    })
 }
