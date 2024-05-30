@@ -8,8 +8,9 @@ const { fetchTopics,
         doesArticleExist,
         updateArticleByID,
         removeComment,
-        doesCommentExist
-        } = require('../models/topics.models')
+        doesCommentExist,
+        fetchUsers
+        } = require('../models/models')
 
 
 
@@ -157,5 +158,12 @@ exports.deleteComment = (req, res, next) => {
                 res.status(204).send( { result } )
             })
         }
+    })
+}
+
+exports.getUsers = (req, res, next) => {
+    return fetchUsers()
+    .then((users) => {
+        res.status(200).send( { users} )
     })
 }

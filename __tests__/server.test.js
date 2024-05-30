@@ -288,3 +288,31 @@ describe('DELETE /api/comments/:comment_id', () => {
         })
     })
 })
+describe('GET /api/users', () => { 
+    test('200: responds with an array of user objects with correct properties', () => {
+        return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then(( { body } ) => {
+            const users = body.users
+            expect(Array.isArray(users)).toBe(true)
+            expect(users.length).toBe(4)
+            users.forEach((user) => {
+                expect(user).toMatchObject({
+                    username: expect.any(String),
+                    name: expect.any(String),
+                    avatar_url: expect.any(String)
+                })
+            })
+        })
+    })
+    test('404: responds with error message when URL is invalid', () => {
+        return request(app)
+        .get('/api/5')
+        .expect(404)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('404: Not Found')
+        })
+    })
+})

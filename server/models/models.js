@@ -112,3 +112,11 @@ exports.doesCommentExist = (comment_id) => {
         return result.rows[0].exists
     })
 }
+
+exports.fetchUsers = () => {
+    const usersQuery = `SELECT * FROM users`
+    return db.query(usersQuery)
+    .then((users) => {
+        return users.rows
+    })
+}

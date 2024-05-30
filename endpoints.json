@@ -78,5 +78,14 @@
   "DELETE /api/comments/:comment_id": {
     "description": "removes comment by id, serves nothing",
     "queries": []
+  },
+  "GET /api/users": {
+    "description":"serves an array of all users",
+    "queries": ["username", "name", "user_id", "sort_by"],
+    "exampleResponse": {
+      "username": "user1",
+      "name": "name1",
+      "avatar_url": "URL to a picture file, their avatar"
+    }
   }
 }
