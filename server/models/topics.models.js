@@ -60,9 +60,25 @@ exports.insertComment = (article_id, newComment) => {
         VALUES ($1, $2, $3)
         RETURNING *;
     `;
-    
     return db.query(newCommentQuery, [newComment.username, newComment.body, article_id])
     .then((result) => {
         return result.rows[0]
-    })
+        })
+
 };
+
+exports.doesUserExist = (username) => {
+    const userExistsQuery = `SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)`;
+    return db.query(userExistsQuery, [username])
+    .then((result) => {
+        return result.rows[0].exists
+    })
+}
+
+exports.doesArticleExist = (article_id) => {
+    const articleExistsQuery = `SELECT EXISTS(SELECT 1 FROM articles WHERE article_id = $1)`
+    return db.query(articleExistsQuery, [article_id])
+    .then((result) => {
+        return result.rows[0].exists
+    })
+}
