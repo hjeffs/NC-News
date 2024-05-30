@@ -90,7 +90,6 @@ exports.updateArticleByID = (article_id, votes) => {
                                 RETURNING *;`
     return db.query(updateArticleQuery, [votes, article_id])
     .then((result) => {
-        console.log(result.rows[0], '<<< MODEL')
         return result.rows[0]
     })
 }
