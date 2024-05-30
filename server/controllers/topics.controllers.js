@@ -5,7 +5,8 @@ const { fetchTopics,
         fetchCommentsByArticleID,
         insertComment,
         doesUserExist,
-        doesArticleExist
+        doesArticleExist,
+        updateArticleByID
         } = require('../models/topics.models')
 
 
@@ -98,6 +99,36 @@ exports.postComment = (req, res, next) => {
             res.status(201).send( { comment } )
         } else { 
             res.status(401).send( { msg: '401: Unauthorized' } )
+        }
+    })
+    .catch(next)
+}
+
+exports.patchArticle = (req, res, next) => {
+    const ID = req.params.article_id
+    const votes = req.body.inc_votes
+    
+    if (isNaN(ID)) {
+        const error = new Error()
+        error.status = 400
+        return next(error)
+    }
+
+    doesArticleExist(ID)
+    .then((exists) => {
+        if (!exists) {
+            const error = new Error()
+            error.status = 404
+            return next(error)
+        }
+    })
+
+    return updateArticleByID(ID, votes)
+    .then((article) => {
+        if(article.length === 0) {
+            res.status(404).send( { msg: '404: Not Found' } )
+        } else {
+            res.status(200).send( { article } )
         }
     })
     .catch(next)

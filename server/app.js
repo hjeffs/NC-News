@@ -6,7 +6,8 @@ const { getTopics,
         getArticleByID,
         getArticles,
         getCommentsByArticleID,
-        postComment
+        postComment,
+        patchArticle
         } = require('../server/controllers/topics.controllers')
 
 const { handle400s, handle401s, handle404s, handle500s } = require('./errors')
@@ -24,6 +25,8 @@ app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id/comments', getCommentsByArticleID)
 
 app.post('/api/articles/:article_id/comments', postComment)
+
+app.patch('/api/articles/:article_id', patchArticle)
 
 app.all('*', (req, res, next) => { 
     const err = new Error('404: Not Found')
