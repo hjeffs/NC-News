@@ -82,3 +82,15 @@ exports.doesArticleExist = (article_id) => {
         return result.rows[0].exists
     })
 }
+
+exports.updateArticleByID = (article_id, votes) => {
+    const updateArticleQuery = `UPDATE articles
+                                SET votes = votes + $1
+                                WHERE article_id = $2
+                                RETURNING *;`
+    return db.query(updateArticleQuery, [votes, article_id])
+    .then((result) => {
+        console.log(result.rows[0], '<<< MODEL')
+        return result.rows[0]
+    })
+}
