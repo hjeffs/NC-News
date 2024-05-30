@@ -87,7 +87,7 @@ exports.postComment = (req, res, next) => {
     .then((exists) => {
         if (!exists) {
             const error = new Error()
-            error.status = 400
+            error.status = 404
             return next(error)
         }
     })
