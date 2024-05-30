@@ -9,7 +9,8 @@ const { fetchTopics,
         updateArticleByID,
         removeComment,
         doesCommentExist,
-        fetchUsers
+        fetchUsers,
+        doesTopicExist
         } = require('../models/models')
 
 
@@ -49,7 +50,21 @@ exports.getArticleByID = (req, res, next) => {
 }
 
 exports.getArticles = (req, res, next) => {
-    return fetchArticles()
+    const { topic } = req.query
+    
+    if ( topic !== undefined) {
+        doesTopicExist( { topic } )
+        .then((exists) => {
+            if (!exists) {
+                const error = new Error()
+                error.status = 404
+                return next(error)
+            }
+        })
+    }
+
+
+    return fetchArticles(topic)
     .then((articles) => {
         res.status(200).send( { articles } )
     })

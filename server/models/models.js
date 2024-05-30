@@ -28,7 +28,19 @@ exports.fetchArticleByID = (ID) => {
     })
 }
 
-exports.fetchArticles = () => {
+exports.fetchArticles = (topic) => {
+    let topicValues = []
+    if (topic !== undefined) {topicValues.push(topic)}
+   
+    if (topicValues.length) {
+        const articlesByTopicQuery = `SELECT * FROM articles a
+        WHERE a.topic = $1`
+        return db.query(articlesByTopicQuery, topicValues)
+        .then((result) => {
+            return result.rows
+        })
+    }
+
     const articlesWithCommentCountQuery = `SELECT a.author, a.title, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url, COUNT(c.comment_id) AS comment_count
                                         FROM articles a
                                         LEFT JOIN comments c
@@ -118,5 +130,14 @@ exports.fetchUsers = () => {
     return db.query(usersQuery)
     .then((users) => {
         return users.rows
+    })
+}
+
+exports.doesTopicExist = (topic) => {
+    const topicExistsQuery = `SELECT EXISTS
+                                (SELECT 1 FROM articles WHERE topic = $1)`
+    return db.query(topicExistsQuery, [topic.topic])
+    .then((result) => {
+        return result.rows[0].exists
     })
 }
