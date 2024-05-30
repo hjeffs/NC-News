@@ -3,8 +3,12 @@ const { fetchTopics,
         fetchArticleByID,
         fetchArticles,
         fetchCommentsByArticleID,
-        insertComment
+        insertComment,
+        doesUserExist,
+        doesArticleExist
         } = require('../models/topics.models')
+
+
 
 exports.getTopics = (req, res, next) => {
     return fetchTopics()
@@ -24,6 +28,11 @@ exports.getApi = (req, res, next) => {
 
 exports.getArticleByID = (req, res, next) => {
     const ID = req.params.article_id
+    if (isNaN(ID)) {
+        const error = new Error()
+        error.status = 400
+        return next(error)
+    }
     return fetchArticleByID(ID)
     .then((article) => {
         if(article.length === 0) {
@@ -45,6 +54,11 @@ exports.getArticles = (req, res, next) => {
 
 exports.getCommentsByArticleID = (req, res, next) => {
     const ID = req.params.article_id
+    if (isNaN(ID)) {
+        const error = new Error()
+        error.status = 400
+        return next(error)
+    }
     return fetchCommentsByArticleID(ID)
     .then((article) => {
         if(article.length === 0) {
@@ -59,9 +73,32 @@ exports.getCommentsByArticleID = (req, res, next) => {
 exports.postComment = (req, res, next) => {
     const article_id = req.params.article_id
     const newComment = req.body
+
+    doesUserExist(newComment.username)
+    .then((exists) => {
+        if (!exists) {
+            const error = new Error()
+            error.status = 401
+            return next(error)
+        }
+    })
+
+    doesArticleExist(article_id)
+    .then((exists) => {
+        if (!exists) {
+            const error = new Error()
+            error.status = 400
+            return next(error)
+        }
+    })
+
     insertComment(article_id, newComment)
     .then((comment) => {
-        res.status(201).send( { comment } )
+        if (comment) {
+            res.status(201).send( { comment } )
+        } else { 
+            res.status(401).send( { msg: '401: Unauthorized' } )
+        }
     })
     .catch(next)
 }

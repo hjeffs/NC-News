@@ -9,7 +9,7 @@ const { getTopics,
         postComment
         } = require('../server/controllers/topics.controllers')
 
-const { handle404s, handle400s, handle500s } = require('./errors')
+const { handle400s, handle401s, handle404s, handle500s } = require('./errors')
 
 app.use(express.json())
 
@@ -26,6 +26,7 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleID)
 app.post('/api/articles/:article_id/comments', postComment)
 
 app.use(handle404s)
+app.use(handle401s)
 app.use(handle400s)
 app.use(handle500s)
 

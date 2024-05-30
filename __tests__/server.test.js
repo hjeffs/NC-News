@@ -170,7 +170,7 @@ describe('GET /api/articles/:article_id/comments', () => {
     })
 })
 
-describe.only('POST /api/articles/:article_id/comments', () => {
+describe('POST /api/articles/:article_id/comments', () => {
     test('201: given valid object, creates new comment', () => {
         const postComment = {
             username: "icellusedkars",
@@ -187,7 +187,7 @@ describe.only('POST /api/articles/:article_id/comments', () => {
             })
         })
     })
-    test('400: responds with error when given invalid object (user does not exist)', () => {
+    test('401: responds with error when given invalid object (user does not exist)', () => {
         const postComment = {
             username: "testingThisFeature",
             body: "blah blah blah"
@@ -195,13 +195,13 @@ describe.only('POST /api/articles/:article_id/comments', () => {
         return request(app)
         .post('/api/articles/2/comments')
         .send(postComment)
-        .expect(400)
+        .expect(401)
         .then(( { body } ) => {
             const errorMsg = body.msg
-            expect(errorMsg).toBe('400: Bad Request')
+            expect(errorMsg).toBe('401: Unauthorized')
         })
     })
-    test('400: responds with error when given valid object and invalid article_id', () => {
+    test('400: responds with error when given valid object and article_id does not exist', () => {
         const postComment = {
             username: "icellusedkars",
             body: "blah blah"
