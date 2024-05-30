@@ -4,6 +4,7 @@ const db = require('../db/connection')
 const data = require('../db/data/test-data')
 const seed = require('../db/seeds/seed')
 const fs = require('fs/promises')
+const { get } = require('http')
 
 beforeEach(() => {
     return seed(data);
@@ -309,6 +310,38 @@ describe('GET /api/users', () => {
     test('404: responds with error message when URL is invalid', () => {
         return request(app)
         .get('/api/5')
+        .expect(404)
+        .then(( { body } ) => {
+            const errorMsg = body.msg
+            expect(errorMsg).toBe('404: Not Found')
+        })
+    })
+})
+describe('GET /api/articles?topic', () => {
+    test('200: responds with array of articles with matching topic', () => {
+        return request(app)
+        .get('/api/articles?topic=cats')
+        .expect(200)
+        .then(( { body } ) => {
+            const catArticles = body.articles
+            expect(Array.isArray(catArticles)).toBe(true)
+            expect(catArticles.length).toBe(1)
+            catArticles.forEach((catArticle) => {
+                expect(catArticle).toMatchObject({
+                    author: expect.any(String),
+                    title: expect.any(String),
+                    article_id: expect.any(Number),
+                    topic: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    article_img_url: expect.any(String),
+                })
+            })
+        })
+    })
+    test('404: responds with an error when the topic does not exist', () => {
+        return request(app)
+        .get('/api/articles?topic=spaghetti')
         .expect(404)
         .then(( { body } ) => {
             const errorMsg = body.msg
