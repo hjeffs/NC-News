@@ -21,8 +21,19 @@ exports.fetchApi = () => {
 }
 
 exports.fetchArticleByID = (ID) => {
-    let SQLQuery = 'SELECT * FROM articles WHERE article_id = $1;'
-    return db.query(SQLQuery, [ID])
+    const articleByIDQuery = `SELECT
+    a.*,
+    COUNT(c.comment_id) AS comment_count
+    FROM
+    articles a
+    LEFT JOIN
+    comments c ON a.article_id = c.article_id
+    WHERE
+    a.article_id = $1
+    GROUP BY
+    a.article_id;`
+
+    return db.query(articleByIDQuery, [ID])
     .then((article) => {
         return article.rows
     })
@@ -41,7 +52,15 @@ exports.fetchArticles = (topic) => {
         })
     }
 
-    const articlesWithCommentCountQuery = `SELECT a.author, a.title, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url, COUNT(c.comment_id) AS comment_count
+    const articlesWithCommentCountQuery = `SELECT 
+                                        a.author, 
+                                        a.title, 
+                                        a.article_id, 
+                                        a.topic, 
+                                        a.created_at, 
+                                        a.votes, 
+                                        a.article_img_url, 
+                                        COUNT(c.comment_id) AS comment_count
                                         FROM articles a
                                         LEFT JOIN comments c
                                         ON a.article_id = c.article_id
