@@ -6,6 +6,12 @@
 
 hjeffs-nc-news is an API designed to allow interaction with articles written by users for users. You can see all possible endpoints at [hjeffs-nc-news](https://hjeffs-nc-news.onrender.com/api).
 
+## Prerequisites
+
+Node.js: v14.0.0
+
+Postgres: v12.0
+
 ## 1: Installation and Setup
 
 From your terminal:
