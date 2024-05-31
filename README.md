@@ -1,4 +1,4 @@
-# Harry Jeffs: Northcoders News API
+# [Harry Jeffs](www.linkedin.com/in/harryjeffs): Northcoders News API
 
 ## [hjeffs-nc-news](https://hjeffs-nc-news.onrender.com/api)
 
