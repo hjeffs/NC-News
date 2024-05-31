@@ -1,4 +1,4 @@
-# [Harry Jeffs](www.linkedin.com/in/harryjeffs): Northcoders News API
+# [Harry Jeffs](https://www.linkedin.com/in/harry-jeffs-195545308/): Northcoders News API
 
 ## [hjeffs-nc-news](https://hjeffs-nc-news.onrender.com/api)
 
@@ -69,4 +69,4 @@ This portfolio project was created as part of a Digital Skills Bootcamp in Softw
 
         Harry Jeffs: Trainee Software Developer @ Northcoders
 
-[LinkedIn](www.linkedin.com/in/harryjeffs)
+[LinkedIn](https://www.linkedin.com/in/harry-jeffs-195545308/)
