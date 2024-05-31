@@ -54,7 +54,7 @@ Create .env.development
 
 ## 4: Scripts
 
-See packade.json for a list of scripts and dependencies to get the API up and running. 
+See package.json for a list of scripts and dependencies to get the API up and running. 
 
 The two below will get the databases working. 
 
