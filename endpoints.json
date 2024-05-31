@@ -27,7 +27,7 @@
       ]
     }
   },
-  "GET /api/articles/article_id": {
+  "GET /api/articles/:article_id": {
     "description": "serves an individual article by ID",
     "queries": [],
     "exampleResponse": {
